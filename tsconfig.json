@@ -23,9 +23,5 @@
     "ignoreDeprecations": "6.0"
   },
   "include": ["src", "sw.js"],
-  "exclude": ["node_modules"],
-  "baseUrl": ".",
-  "paths": {
-    "@/*": ["./*"]
-  }
+  "exclude": ["node_modules"]
 }
