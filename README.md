@@ -1,142 +1,221 @@
-# 🚀 ClipStream
+# 🎬 ClipStream — Plataforma de Vídeos e Artigos (React + TypeScript + Redux)
 
-**ClipStream** é uma aplicação web moderna e responsiva para **exibição, busca e interação com vídeos e artigos**, com foco em performance, reatividade e excelente experiência do usuário. A arquitetura foi aprimorada com hooks customizados, state management escalável e estilização modular com suporte a dark mode.
+Uma plataforma moderna e responsiva para **exibição, busca e interação com vídeos e artigos**, construída com foco em **performance, escalabilidade e experiência do usuário**.  
+O projeto traz técnicas avançadas de React, arquitetura organizada, hooks customizados, dark mode, animações e integração completa com API própria.
+
+🔗 **Demo Online:** https://frontend-clipstream.vercel.app/  
+🔗 **Backend:** https://github.com/joaovitorsamora/backend-clipStream  
+🔗 **Frontend:** https://github.com/joaovitorsamora/frontend-clipstream
+
+---
 
 ![Demo do ClipStream](./public/ClipstreamGIF.gif)
 
+## 🌟 Resumo do Projeto
+
+O ClipStream simula uma plataforma real de streaming, com:
+
+- Busca dinâmica com *debounce*  
+- Sistema de comentários  
+- Likes/Dislikes reativos  
+- Carrossel de artigos com contagem de visualizações  
+- Página de detalhes do vídeo  
+- Skeletons, dark mode e animações  
+- Performance otimizada com hooks customizados  
+- Integração real com backend em Node + PostgreSQL  
+
+O resultado é uma aplicação com cara de **produto profissional**, ideal para demonstrar domínio de front-end moderno.
+
 ---
 
-## Deploy
+## ⚙️ Tecnologias Utilizadas
 
-```bash
-https://frontend-clipstream.vercel.app/
+| Categoria | Tecnologias |
+|----------|-------------|
+| Frontend | **React 18**, **TypeScript**, **React Router DOM**, **Redux + Thunk** |
+| UI/UX | **TailwindCSS**, **OKLCH tokens**, Skeleton loaders, Swiper, Material UI Icons |
+| API | Axios com interceptadores |
+| Testes | **Jest**, **React Testing Library** |
+| Deploy | **Vercel** |
+| Outros | ESLint, Prettier, New Relic |
+
+---
+
+## 🚀 Funcionalidades Principais
+
+### 🔍 Busca em Tempo Real  
+Busca de vídeos com **debounce**, evitando requisições excessivas e mantendo a performance.
+
+### 🎬 Exibição de Vídeos  
+- Cards com thumbnails  
+- Botão de play  
+- Página de detalhes com player  
+- Descrição com *ver mais/ver menos*  
+
+### 👍👎 Interações  
+Sistema de **likes/dislikes** reativo com persistência na API.
+
+### 💬 Comentários em Vídeos  
+- Envio assíncrono  
+- Usernames gerados automaticamente  
+- Renderização instantânea  
+
+### 📰 Artigos Destacados  
+Carrossel estilizado com contagem automática de visualizações.
+
+### 🌘 Dark Mode Profissional  
+Implementado com **tokens OKLCH** + Tailwind → transições suaves e acessíveis.
+
+### 📱 Totalmente Responsivo  
+Layout otimizado desde **320px até 4K**, com breakpoints detectados por hook customizado.
+
+---
+
+## 🧠 Destaques Técnicos (o que esse projeto prova)
+
+✔ Arquitetura modular por domínio  
+✔ Redux avançado com Thunks assíncronos  
+✔ Hooks customizados (useFilteredVideos, useFetchData, useCheckScreen)  
+✔ Consumo de API com variáveis de ambiente  
+✔ Padrões profissionais de componentização  
+✔ Testes reais com Jest e Testing Library  
+✔ Dark mode com tokens OKLCH  
+✔ UX otimizada (Skeletons, debounce, lazy loading)  
+✔ Deploy contínuo e estável no Vercel  
+
+---
+
+## 🧩 Arquitetura da Aplicação
+
 ```
 
-## ✨ Funcionalidades
-
-- 🔍 **Busca de Vídeos:** Filtro instantâneo por título com debounce.
-- 🎬 **Listagem de Vídeos:** Cards com thumbnails interativos e botão de play.
-- 📄 **Detalhes do Vídeo:** Página dedicada com player, likes, dislikes e comentários.
-- 💬 **Comentários:** Interação em tempo real com envio assíncrono e username randômico.
-- 👍👎 **Likes/Dislikes:** Sistema reativo com controle de estado e persistência.
-- 📰 **Artigos em Destaque:** Carrossel estilizado com contagem de visualizações.
-- 📱 **Responsividade Completa:** Adaptável de mobile a 4K.
-- 🌘 **Dark Mode:** Ativado por tokens via `oklch` com Tailwind.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-| Tecnologia             | Descrição                                         |
-| ---------------------- | ------------------------------------------------- |
-| **React 18**           | SPA moderna com JSX e reatividade                 |
-| **TypeScript**         | Tipagem segura e modularização avançada           |
-| **Redux + Thunk**      | Gerenciamento global assíncrono                   |
-| **React Router DOM**   | Navegação entre páginas                           |
-| **Axios**              | Requisições HTTP com interceptadores              |
-| **Swiper**             | Carrossel de artigos responsivo                   |
-| **p5.js**              | Animação vetorial no header                       |
-| **Material UI Icons**  | Ícones para ações interativas                     |
-| **Jest + Testing Lib** | Testes unitários de actions e reducers            |
-| **TailwindCSS**        | Estilização com utilitários e dark mode integrado |
-| **New Relic**          | Monitoramento de performance                      |
-| **Prettier**           | Padronização de código                            |
-
----
-
-## 🔧 Implementações Técnicas
-
-### 🎯 Estado Global com Redux
-
-- `videoReducer`: Lista de vídeos e termos de busca
-- `videoDetailReducer`: Detalhes, likes, dislikes e comentários
-- Modularização com actions e reducers separados
-
-### 🧪 Testes Unitários
-
-- Cobertura de actions e reducers
-- Testes com Jest e React Testing Library
-
-### 🧩 Componentização
-
-- `CardComponent`, `Carousel`, `Header`, `Input`, `ExpandableText`, `Skeletons`, `Typography`
-- Design escalável com props reutilizáveis
-
-### 📦 Hooks Customizados
-
-- `useFilteredVideos`: Filtra resultados conforme o termo de busca
-- `useFetchData`: Consome vídeos e artigos via `.env` com loading controlado
-- `useCheckScreen`: Detecta breakpoints responsivamente
-
-### 🎨 Estilização Modular
-
-- Tailwind com tokens `oklch` para temas claro/escuro
-- Layout responsivo com `clamp`, `grid`, `aspect-video`
-
----
-
-## 📈 Melhorias Recentes
-
-| Área         | Antes                           | Depois                                    |
-| ------------ | ------------------------------- | ----------------------------------------- |
-| Estilização  | CSS Modules e classes repetidas | Tailwind com tokens e utilitários         |
-| Player       | `<iframe>` direto no card       | Thumbnail com botão play personalizado    |
-| UX           | Descrição fixa                  | Texto expandível (ver mais/ver menos)     |
-| Carregamento | Nenhum feedback visual          | Skeleton loaders para vídeos e artigos    |
-| API Fetch    | URLs hardcoded                  | Uso de `.env` com hook customizado        |
-| Dark Mode    | Ausente                         | Implementado via `:root` e `oklch`        |
-| Redux        | Estrutura inflada e acoplada    | Divisão por domínio com testes            |
-| Comentários  | Inline e misturados             | Componente isolado com avatar e user fake |
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-frontend-clipStream/
+frontend-clipstream/
 ├── public/
-│ └── index.html
+│   └── index.html
 ├── src/
-│ ├── App.tsx
-│ ├── index.tsx
-│ ├── types.ts
-│ ├── components/
-│ │ ├── Header/
-│ │ ├── Card/
-│ │ ├── Carousel/
-│ │ ├── Articles/
-│ │ ├── FilteredVideos/
-│ │ ├── Input/
-│ │ ├── P5Sketch/
-│ │ ├── Typography/
-│ │ ├── ExpandableText/
-│ │ └── Skeleton/
-│ ├── hooks/
-│ │ ├── useFilteredVideos.tsx
-│ │ ├── useFetchData.tsx
-│ │ └── useCheckScreen.tsx
-│ ├── pages/
-│ │ └── VideoDetail/
-│ ├── redux/
-│ │ ├── video/
-│ │ ├── video-detail/
-│ │ └── root-reducer.ts
-│ └── App.css
-│
-│
+│   ├── App.tsx
+│   ├── index.tsx
+│   ├── types.ts
+│   ├── components/
+│   │   ├── Header/
+│   │   ├── Card/
+│   │   ├── Carousel/
+│   │   ├── Articles/
+│   │   ├── Input/
+│   │   ├── Skeleton/
+│   │   ├── Typography/
+│   │   └── ExpandableText/
+│   ├── hooks/
+│   │   ├── useFilteredVideos.ts
+│   │   ├── useFetchData.ts
+│   │   └── useCheckScreen.ts
+│   ├── pages/
+│   │   └── VideoDetail/
+│   └── redux/
+│       ├── video/
+│       ├── video-detail/
+│       └── root-reducer.ts
 ├── .env
 ├── package.json
 └── README.md
 
+````
+
+---
+
+## 📈 Melhorias Implementadas
+
+| Área | Antes | Depois |
+|------|--------|-----------|
+| Estilização | CSS Modules | Tailwind + tokens OKLCH |
+| Player | iframe direto | Thumbnail + Play button |
+| UX | Descrição fixa | Texto expandível |
+| Carregamento | Sem feedback | Skeleton loaders |
+| API | URLs fixas | `.env` + useFetchData |
+| Redux | Estrutura acoplada | Separação por domínio + testes |
+| Comentários | Inline | Componente isolado |
+| Performance | Sem otimização | Debounce + lazy loading |
+
+---
+
+## 🧪 Testes
+
+O projeto possui testes cobrindo:
+
+- Actions  
+- Reducers  
+- Lógica de estado  
+- Componentes essenciais  
+
+🧪 Ferramentas: **Jest** + **React Testing Library**
+
+---
+
+## 🔌 Backend
+
+O ClipStream utiliza um backend próprio, com:
+
+- Node.js  
+- Express  
+- Sequelize  
+- PostgreSQL (Neon)  
+- Deploy serverless na Vercel  
+
+📌 **Repositório do Backend:**  
+https://github.com/joaovitorsamora/backend-clipStream
+
+---
+
+## 🛠 Como Rodar Localmente
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/joaovitorsamora/frontend-clipstream.git
+cd frontend-clipstream
+````
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Configure o arquivo `.env`
+
+```
+VITE_API_URL=https://backend-clipstream.vercel.app
+```
+
+### 4. Inicie o servidor
+
+```bash
+npm start
 ```
 
 ---
 
-## 📝 Instalação
+## 🤝 Contribuições
 
-```bash
-git clone https://github.com/joaovitorsamora/frontend-clipdtream.git
-cd frontend-clipstream
-npm install
-npm start
+Sinta-se livre para abrir **issues**, **discussões** ou enviar **pull requests**.
+Feedback de UI, performance e arquitetura são sempre bem-vindos!
+
+---
+
+## ⭐ Ajude o Projeto
+
+Se este projeto te ajudou ou te inspirou, considere deixar uma ⭐ no repositório!
+Isso ajuda muito o projeto a ganhar visibilidade.
+
+---
+
+```
+
+Se quiser, eu posso:
+
+🎨 gerar imagens e GIFs para você inserir  
+🏷️ criar badges de status (build, coverage, version, deploy)  
+🇺🇸 traduzir para inglês  
+📦 criar a versão “currículo” desse projeto  
+
+É só pedir!
 ```
