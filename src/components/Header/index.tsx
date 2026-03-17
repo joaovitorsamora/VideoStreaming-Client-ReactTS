@@ -1,34 +1,45 @@
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
-import { Input } from '../../ui/Input/input'
-import { TypographyH1 } from '../../ui/Typography/TypographyH1'
+import { ArrowLeft, Search } from 'lucide-react'
 import { HeaderProps } from '../../types'
 
 export const Header: React.FC<HeaderProps> = ({ title, onChange, value, placeholder }) => {
   const location = useLocation()
+  const isHome = location.pathname === '/'
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
-      <header className="w-full max-w-6xl mx-auto flex items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-md shadow-sm dark:bg-gray-700/40 dark:border-gray-800 px-4 sm:px-6 py-3">
-        <div className="flex items-center min-w-[120px]">
-          {location.pathname !== '/' && (
-            <Link to="/" className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200 hover:underline">
-              <ArrowLeft size={18} />
-              Voltar
-            </Link>
-          )}
-        </div>
+    <header className="w-full flex items-center justify-between px-6 py-4 bg-white/[0.02] border-b border-white/[0.06] backdrop-blur-md sticky top-0 z-20">
+      <div className="w-24 flex items-center">
+        {!isHome && (
+          <Link
+            to="/"
+            className="flex items-center gap-2 text-sm text-white/40 hover:text-white/80 transition-colors duration-150"
+          >
+            <ArrowLeft size={15} />
+            Voltar
+          </Link>
+        )}
+      </div>
 
-        <div className="flex-1 flex justify-center">
-          <TypographyH1 className="text-black text-lg sm:text-xl font-bold dark:text-white">{title}</TypographyH1>
-        </div>
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 rounded-full bg-violet-500" />
+        <span className="text-[15px] font-semibold tracking-tight text-white">{title ?? 'ClipStream'}</span>
+      </div>
 
-        <div className="flex justify-end min-w-[120px]">
-          {location.pathname === '/' && (
-            <Input type="text" value={value} onChange={onChange} placeholder={placeholder} />
-          )}
-        </div>
-      </header>
-    </div>
+      <div className="w-24 flex justify-end">
+        {isHome && (
+          <div className="flex items-center gap-2 bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-2 w-44 transition-all duration-150 hover:bg-white/[0.07] hover:border-white/[0.14] focus-within:border-violet-500/50">
+            <Search size={13} className="text-white/30 shrink-0" />
+            <input
+              type="text"
+              value={value}
+              onChange={onChange}
+              placeholder={placeholder ?? 'Buscar vídeos...'}
+              className="bg-transparent border-none outline-none text-[13px] text-white placeholder:text-white/25 w-full font-sans"
+            />
+          </div>
+        )}
+      </div>
+    </header>
   )
 }

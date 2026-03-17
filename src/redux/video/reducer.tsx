@@ -13,20 +13,20 @@ const initialState: VideoState = {
 
 export interface VideoAction {
   type: string
-  payload?: any
+  payload: VideoProps[] | string
 }
 
-const videoReducer = (state = initialState, action: VideoAction): VideoState => {
+const videoReducer = (state: VideoState = initialState, action: VideoAction): VideoState => {
   switch (action.type) {
     case SET_VIDEOS:
       return {
         ...state,
-        videos: action.payload,
+        videos: action.payload as VideoProps[],
       }
     case SET_SEARCH_TERMS:
       return {
         ...state,
-        searchTerms: action.payload,
+        searchTerms: action.payload as string,
       }
     default:
       return state

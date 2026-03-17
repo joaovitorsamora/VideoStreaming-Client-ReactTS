@@ -7,7 +7,5 @@ export const ProtectedRoutes = () => {
     return <Navigate to="/" replace />
   }
 
-  sessionStorage.removeItem('canAccessVideo')
-
   return <Outlet />
 }

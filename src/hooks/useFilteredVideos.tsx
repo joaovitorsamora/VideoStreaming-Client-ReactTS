@@ -1,25 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
+import { VideoProps } from '../types'
 
-interface VideoData {
-  id: number
-  url: string
-  title: string
-  description?: string
-}
-
-export const useFilteredVideos = (videos: VideoData[], searchTerms: string) => {
-  const [filteredVideoList, setFilteredVideoList] = useState<VideoData[]>(videos)
-
-  useEffect(() => {
-    if (!searchTerms.trim()) {
-      setFilteredVideoList(videos)
-    } else {
-      const filtered = videos?.filter((video) => video.title.toLowerCase().includes(searchTerms.toLowerCase()))
-      setFilteredVideoList(filtered)
-    }
+export const useFilteredVideos = (videos: VideoProps[], searchTerms: string) => {
+  const filteredVideoList = useMemo(() => {
+    if (!searchTerms.trim()) return videos
+    return videos.filter((video) => video.title.toLowerCase().includes(searchTerms.toLowerCase()))
   }, [videos, searchTerms])
 
-  return {
-    filteredVideoList,
-  }
+  return { filteredVideoList }
 }

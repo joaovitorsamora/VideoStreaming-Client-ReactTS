@@ -12,13 +12,13 @@ interface Comment {
 }
 
 interface VideoDetailState {
-  videos: VideoProps
+  videos: VideoProps[]
   likes: number
   dislikes: number
   comments: Comment[]
 }
 
-interface LinksProps {
+interface ArticleProps {
   id: number
   title: string
   url: string
@@ -47,10 +47,6 @@ interface TitleProps {
   className?: string
 }
 
-interface P5SketchProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode
-}
-
 interface CarouselProps {
   id: number
   title: string
@@ -70,8 +66,7 @@ export type {
   VideoProps,
   VideoDetailState,
   TitleProps,
-  P5SketchProps,
-  LinksProps,
+  ArticleProps,
   InputProps,
   HeaderProps,
   CarouselProps,

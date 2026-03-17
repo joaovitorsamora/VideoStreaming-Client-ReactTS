@@ -1,163 +1,176 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
 import { useDispatch, useSelector } from 'react-redux'
+import { ThumbsUp, ThumbsDown } from 'lucide-react'
 import { addComment, setDislikes, setLikes, setVideoDetail } from '../../redux/video-detail/actions'
-import rootReducer from '../../redux/root-reducer'
+import { videoService } from '../../services/videoServices'
+import { RootState } from '@/src/redux/store'
 import { Comment } from '../../types'
-import { TypographyH2 } from '../../ui/Typography/TypographyH2'
-import { TypographyH3 } from '../../ui/Typography/TypographyH3'
 import ExpandableText from '../../components/ExpandableText'
-import { DefaultPage } from '../../components/DefaultPage'
 
-const generateUsername = () => `user${Math.floor(Math.random() * 1000000000)}`
+const generateUsername = () => `user${Math.floor(Math.random() * 1_000_000_000)}`
+
 const VideoDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const [countComments, setCountComments] = useState<number>(0)
-  const [newComments, setNewComments] = useState<string>('')
-  const [likeEnable, setLikeEnable] = useState(true)
-  const [dislikeEnable, setDislikeEnable] = useState(true)
   const dispatch = useDispatch()
 
-  const { videos, likes, dislikes, comments } = useSelector(
-    (state: ReturnType<typeof rootReducer>) => state.videoDetailReducer
-  )
+  const [commentText, setCommentText] = useState('')
+  const [likeEnabled, setLikeEnabled] = useState(true)
+  const [dislikeEnabled, setDislikeEnabled] = useState(true)
+
+  const { videos, likes, dislikes, comments } = useSelector((state: RootState) => state.videoDetailReducer)
 
   useEffect(() => {
+    if (isNaN(Number(id))) {
+      navigate('/')
+      return
+    }
+
     if (id) {
-      axios
-        .get(`https://backend-clipstream.vercel.app/videos/${id}`)
+      videoService
+        .getById(id)
         .then((response) => {
           dispatch(setVideoDetail(response.data))
           dispatch(setLikes(response.data.likes))
           dispatch(setDislikes(response.data.dislikes))
           dispatch(addComment(response.data.comments))
-          setCountComments(response.data.comments.length)
         })
         .catch((error) => {
           console.error(error.response ? error.response.data : error.message)
         })
     }
-  }, [id, dispatch])
-
-  useEffect(() => {
-    if (isNaN(Number(id))) {
-      navigate('/')
-    }
-  }, [id, navigate])
+  }, [id, dispatch, navigate])
 
   const handleLike = () => {
-    axios
-      .post(`https://backend-clipstream.vercel.app/videos/${id}/like`)
+    videoService
+      .like(Number(id))
       .then((response) => {
         dispatch(setLikes(response.data.likes))
-        setLikeEnable(false)
+        setLikeEnabled(false)
       })
-      .catch((error) => {
-        console.error(error)
-      })
+      .catch(console.error)
   }
 
   const handleDislike = () => {
-    axios
-      .post(`https://backend-clipstream.vercel.app/videos/${id}/dislike`)
+    videoService
+      .dislike(Number(id))
       .then((response) => {
         dispatch(setDislikes(response.data.dislikes))
-        setDislikeEnable(false)
+        setDislikeEnabled(false)
       })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewComments(event.target.value)
+      .catch(console.error)
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    const newUserComments = { content: newComments, user: generateUsername() }
-    axios
-      .post(`https://backend-clipstream.vercel.app/videos/${id}/comment`, newUserComments)
+    if (!commentText.trim()) return
+
+    const payload = { content: commentText, user: generateUsername() }
+
+    videoService
+      .addComment(Number(id), payload)
       .then((response) => {
-        const newComment = response.data.data.comment
-        dispatch(addComment(newComment))
-        setCountComments((prevCount) => prevCount + 1)
-        setNewComments('')
+        dispatch(addComment(response.data.data.comment))
+        setCommentText('')
       })
-      .catch((error) => {
-        console.error(error)
-      })
+      .catch(console.error)
   }
 
+  if (!videos) return null
+
   return (
-    <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 py-6 text-white bg-black min-h-screen">
-      {videos && (
-        <div key={videos.id} className="w-full max-w-screen-xl flex flex-col gap-6">
-          <div className="w-full flex justify-center">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 text-white">
+      {videos.map((video) => (
+        <>
+          <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/[0.07] bg-[#111118]">
             <iframe
-              src={videos.url}
-              title={videos.title}
+              src={video.url}
+              title={video.title}
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="aspect-video w-full max-w-5xl rounded-md shadow-lg border border-neutral-700"
+              className="w-full h-full"
             />
           </div>
-          <header className="w-full max-w-5xl flex flex-col gap-4 px-4">
-            <TypographyH2 className="text-xl sm:text-2xl md:text-3xl text-white font-bold">{videos.title}</TypographyH2>
+
+          <div className="mt-6 flex flex-col gap-3">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white leading-snug">{video.title}</h1>
+
             <ExpandableText
-              text={videos.description}
+              text={video.description ?? ''}
               maxLength={120}
-              className="bg-neutral-800 text-neutral-300 text-base sm:text-lg p-4 rounded-md"
+              className="text-sm text-white/45 leading-relaxed bg-white/[0.03] rounded-lg px-4 py-3 border border-white/[0.05]"
             />
-            <div className="flex gap-4">
-              <button
-                className="flex items-center gap-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded disabled:opacity-50"
-                onClick={handleLike}
-                disabled={!likeEnable}
-              >
-                <ThumbUpOffAltIcon /> {likes}
-              </button>
-              <button
-                className="flex items-center gap-1 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded disabled:opacity-50"
-                onClick={handleDislike}
-                disabled={!dislikeEnable}
-              >
-                <ThumbDownOffAltIcon /> {dislikes}
-              </button>
-            </div>
-          </header>
-          <div className="w-full max-w-5xl px-4">
-            <TypographyH3 className="text-lg text-white mb-4">{countComments} Comentários</TypographyH3>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
+          </div>
+          <div className="flex items-center gap-2 mt-5 pb-6 border-b border-white/[0.06]">
+            <button
+              onClick={handleLike}
+              disabled={!likeEnabled}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed
+                ${
+                  !likeEnabled
+                    ? 'bg-violet-500/15 border-violet-500/40 text-violet-300'
+                    : 'bg-white/[0.04] border-white/[0.09] text-white/65 hover:bg-white/[0.08] hover:text-white'
+                }`}
+            >
+              <ThumbsUp size={14} />
+              {likes}
+            </button>
+
+            <button
+              onClick={handleDislike}
+              disabled={!dislikeEnabled}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed
+                ${
+                  !dislikeEnabled
+                    ? 'bg-rose-500/15 border-rose-500/40 text-rose-300'
+                    : 'bg-white/[0.04] border-white/[0.09] text-white/65 hover:bg-white/[0.08] hover:text-white'
+                }`}
+            >
+              <ThumbsDown size={14} />
+              {dislikes}
+            </button>
+          </div>
+
+          <div className="mt-6">
+            <p className="text-[13px] text-white/35 mb-4 tracking-wide">
+              {comments.length} {comments.length === 1 ? 'comentário' : 'comentários'}
+            </p>
+
+            <form onSubmit={handleSubmit} className="flex items-center gap-3 mb-8">
               <input
-                className="w-full sm:w-3/4 border-b-2 border-white bg-transparent px-3 py-2 text-white placeholder:text-neutral-400 focus:outline-none"
                 type="text"
-                value={newComments}
-                onChange={handleChange}
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
                 placeholder="Escreva um comentário..."
+                className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2.5 text-[13px] text-white placeholder:text-white/20 outline-none focus:border-violet-500/50 transition-colors duration-150"
               />
-              <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+              <button
+                type="submit"
+                className="px-4 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-[13px] font-medium rounded-lg transition-colors duration-150"
+              >
                 Enviar
               </button>
             </form>
-            <ul className="space-y-6">
+
+            <ul className="flex flex-col gap-5">
               {comments.map((comment: Comment, index: number) => (
-                <li key={index} className="flex gap-3 items-start">
-                  <img src="/user-avatar.png" alt="Avatar" className="w-10 h-10 rounded-full" />
+                <li key={index} className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-violet-500/20 border border-violet-500/25 flex items-center justify-center shrink-0">
+                    <span className="text-[11px] font-medium text-violet-300">
+                      {comment.user.slice(-2).toUpperCase()}
+                    </span>
+                  </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">{comment.user}</p>
-                    <p className="text-neutral-300">{comment.content}</p>
+                    <p className="text-[12px] font-medium text-white/45 mb-0.5">{comment.user}</p>
+                    <p className="text-[13.5px] text-white/70 leading-relaxed">{comment.content}</p>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
-      )}
+        </>
+      ))}
     </div>
   )
 }

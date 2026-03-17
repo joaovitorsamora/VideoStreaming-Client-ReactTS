@@ -1,5 +1,3 @@
-'use client'
-
 import { Skeleton } from '../../ui/Skeleton'
 import { useCheckScreen } from '../../hooks/useCheckScreen'
 export const SkeletonArticleCard = () => {
