@@ -1,5 +1,6 @@
 import { SET_VIDEOS, SET_SEARCH_TERMS } from './actions-types'
 import { setVideos, setSeachTerms } from './actions'
+import { describe, test, expect } from 'vitest'
 
 describe('Video Actions', () => {
   describe('Actions Types', () => {

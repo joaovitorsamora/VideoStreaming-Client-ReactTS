@@ -1,29 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { Carousel } from '../../Carousel/index'
+import { describe, test, expect, vi } from 'vitest'
+import { Carousel } from '../../Carousel'
 
-jest.mock('../../Carousel/index', () => ({
-  Carousel: ({ id, title, description, image, onClickLink, site, url, views }: any) => (
-    <div>
-      <div data-testid={`carousel-${id}`} onClick={() => onClickLink(url, id)}>
-        <div>
-          <h3>
-            {title} - {site}
-            <span>{views}</span>
-          </h3>
-          <p>{description}</p>
-        </div>
-        <div>
-          <img src={image} alt={title} />
-        </div>
-      </div>
-    </div>
-  ),
-}))
+describe('Carousel component', () => {
+  test('should render article data and handle click', () => {
+    const onClickMock = vi.fn()
 
-describe('Should render Artcicles component', () => {
-  const onClickMock = jest.fn()
-  const meusItems = [
-    {
+    const item = {
       id: 1,
       title: 'title',
       description: 'description',
@@ -32,19 +15,20 @@ describe('Should render Artcicles component', () => {
       site: 'site.com',
       url: 'https://google.com',
       views: 100,
-    },
-  ]
-  test('Should render Articles component', () => {
-    render(<Carousel {...meusItems[0]} />)
-    meusItems.forEach((element) => {
-      expect(screen.getByText(/title/)).toBeInTheDocument()
-      expect(screen.getByText(element.description)).toBeInTheDocument()
-      expect(screen.getByText(/site\.com/)).toBeInTheDocument()
-      expect(screen.getByText(/100/)).toBeInTheDocument()
-      expect(screen.getByAltText(element.title)).toHaveAttribute('src', element.image)
-    })
+    }
 
-    fireEvent.click(screen.getByTestId(`carousel-${meusItems[0].id}`))
-    expect(onClickMock).toHaveBeenCalledWith('https://google.com', 1)
+    render(<Carousel {...item} />)
+
+    expect(screen.getByText(/title/i)).toBeInTheDocument()
+    expect(screen.getByText(item.description)).toBeInTheDocument()
+    expect(screen.getByText(/site\.com/i)).toBeInTheDocument()
+
+    expect(screen.getByText(/100/i)).toBeInTheDocument()
+
+    expect(screen.getByAltText(item.title)).toHaveAttribute('src', item.image)
+
+    fireEvent.click(screen.getByText(/title/i))
+
+    expect(onClickMock).toHaveBeenCalledWith(item.url, item.id)
   })
 })
