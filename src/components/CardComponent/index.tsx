@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { VideoProps } from '../../types'
+import { getYoutubeThumbnail } from '../../utils/getYoutubeThumbnail'
 
-export const CardComponent: React.FC<VideoProps> = ({ id, title }) => {
+export const CardComponent: React.FC<VideoProps> = ({ id, title, url }) => {
   const handleAccess = () => {
     sessionStorage.setItem('canAccessVideo', 'true')
   }
@@ -15,7 +16,7 @@ export const CardComponent: React.FC<VideoProps> = ({ id, title }) => {
     >
       <div className="relative aspect-video overflow-hidden bg-[#1a1a25]">
         <img
-          src={`/thumbnails/${id}.jpeg`}
+          src={getYoutubeThumbnail(url)}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
