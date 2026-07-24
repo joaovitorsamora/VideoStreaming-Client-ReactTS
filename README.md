@@ -207,15 +207,3 @@ Se este projeto te ajudou ou te inspirou, considere deixar uma ⭐ no repositór
 Isso ajuda muito o projeto a ganhar visibilidade.
 
 ---
-
-```
-
-Se quiser, eu posso:
-
-🎨 gerar imagens e GIFs para você inserir  
-🏷️ criar badges de status (build, coverage, version, deploy)  
-🇺🇸 traduzir para inglês  
-📦 criar a versão “currículo” desse projeto  
-
-É só pedir!
-```
