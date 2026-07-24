@@ -3,8 +3,8 @@
 Plataforma full-stack de streaming de vídeos e artigos, com busca em tempo real, sistema de curtidas/comentários e feed de artigos com contagem de visualizações. Frontend em React + TypeScript, consumindo uma API própria em Node.js.
 
 🔗 **Demo:** https://frontend-clipstream.vercel.app/
-🔗 **Backend:** https://github.com/joaovitorsamora/backend-clipStream
-🔗 **Frontend:** https://github.com/joaovitorsamora/frontend-clipstream
+🔗 **Backend:** [https://github.com/joaovitorsamora/VideoStreaming-API-NodeJS](https://github.com/joaovitorsamora/VideoStreaming-API-NodeJS.git)
+🔗 **Frontend:** [https://github.com/joaovitorsamora/VideoStreaming-Client-ReactTS](https://github.com/joaovitorsamora/VideoStreaming-Client-ReactTS.git)
 
 ![ClipStream Demo](./public/ClipstreamGIF.gif)
 
@@ -71,8 +71,8 @@ Comparado à primeira versão funcional do ClipStream:
 
 ### 1. Clone o repositório
 ```bash
-git clone https://github.com/joaovitorsamora/frontend-clipstream.git
-cd frontend-clipstream
+git clone https://github.com/joaovitorsamora/VideoStreaming-Client-ReactTS.git
+cd VideoStreaming-Client-ReactTS
 ```
 
 ### 2. Instale as dependências
@@ -82,7 +82,7 @@ npm install
 
 ### 3. Configure o arquivo `.env`
 ```
-VITE_APP_BASE_URL=https://backend-clipstream.vercel.app
+VITE_APP_BASE_URL=backend-clipstream.vercel.app
 ```
 
 ### 4. Inicie o servidor de desenvolvimento
