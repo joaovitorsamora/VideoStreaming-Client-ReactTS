@@ -28,7 +28,7 @@ Plataforma full-stack de streaming de vídeos e artigos, com busca em tempo real
 ## ✨ Funcionalidades
 
 - **Busca em tempo real** dos vídeos, com filtragem memoizada via `useMemo` (evita recomputação desnecessária a cada render)
-- **Extração automática de thumbnails do YouTube** a partir da URL do vídeo — sem upload manual de imagem por item
+- **Extração automática de thumbnails do YouTube** a partir da URL do vídeo sem upload manual de imagem por item
 - **Página de detalhe do vídeo** com player embutido, descrição expansível, curtidas/descurtidas e comentários assíncronos
 - **Proteção de rota**: a página de detalhe de vídeo só é acessível navegando por um card na home; acesso direto via URL é bloqueado e redireciona para a home
 - **Code-splitting por rota** com `React.lazy` + `Suspense`
@@ -40,7 +40,7 @@ Plataforma full-stack de streaming de vídeos e artigos, com busca em tempo real
 
 ## 🔧 Destaques técnicos
 
-- Camada de serviço (`services/api.ts`, `videoServices.ts`, `articleServices.ts`) isolando todas as chamadas HTTP — nenhum componente faz `axios` direto
+- Camada de serviço (`services/api.ts`, `videoServices.ts`, `articleServices.ts`) isolando todas as chamadas HTTP, nenhum componente faz `axios` direto
 - Hooks especializados por domínio (`useVideos`, `useArticles`, `useFilteredVideos`, `useCheckScreen`) no lugar de um hook genérico acoplando dados diferentes
 - Redux com actions/reducers separados por domínio (`video`, `videoDetail`, `article`), com testes de unidade cobrindo actions e reducers
 - Teste de componente (React Testing Library) cobrindo render e interação do componente `Articles`
@@ -61,7 +61,7 @@ Comparado à primeira versão funcional do ClipStream:
 | Busca | Filtro recalculado a cada render | Filtragem memoizada com `useMemo` |
 | Thumbnails | Arquivo estático (`/thumbnails/{id}.jpeg`), exigia upload manual por vídeo | Extração automática a partir da URL do YouTube |
 | Roteamento | Rota de detalhe acessível diretamente por URL, sem code-splitting | Lazy loading por rota + guard bloqueando acesso direto |
-| Contagem de views | Bug de tipagem no estado — contador não refletia o valor real vindo da API | Corrigido: estado tipado corretamente, reflete o valor da API |
+| Contagem de views | Bug de tipagem no estado, contador não refletia o valor real vindo da API | Corrigido: estado tipado corretamente, reflete o valor da API |
 | CI/CD | Inexistente | GitHub Actions (install/build/test automatizados) |
 | Código morto | Componente duplicado comentado no código-fonte | Removido |
 
@@ -84,7 +84,6 @@ npm install
 ```
 VITE_APP_BASE_URL=https://backend-clipstream.vercel.app
 ```
-> ⚠️ A variável usada pelo código (`services/api.ts`) é `VITE_APP_BASE_URL`. Usar `VITE_API_URL` (nome antigo, incorreto) deixa a `baseURL` do Axios como `undefined` e quebra todas as chamadas de API.
 
 ### 4. Inicie o servidor de desenvolvimento
 ```bash
